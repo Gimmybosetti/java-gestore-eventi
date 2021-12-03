@@ -3,7 +3,7 @@ package org.generation.italy.event;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Evento {
+public class Evento implements Comparable<Evento> {
 	
 	//attributi
 	private String titolo;
@@ -76,8 +76,8 @@ public class Evento {
 	public void prenota() throws Exception {
 		if(!isValidDate(this.data)) {
 			throw new Exception("La data è già passata!");
-		}else if (postiPrenotati >= postiTotali){
-			throw new Exception("I posti sono terminati");
+		}else if (postiPrenotati > postiTotali){
+			throw new Exception("Non ci sono abbastanza posti oppure sono terminati");
 		}else {
 			postiPrenotati++;;
 		}
@@ -100,6 +100,21 @@ public class Evento {
 		dataFormattata = data.format(formatter);
 		return dataFormattata + " - " + titolo;
 	}
+
+	@Override
+	public int compareTo(Evento o) {
+		int result;
+		if(this.getData().isAfter(o.getData())) {
+			result = -1;
+		}else if(this.getData().isBefore(o.getData())) {
+			result = 1;
+		}else {
+			result = 0;
+		}
+		return result;
+	}
+	
+	
 	
 }
 
